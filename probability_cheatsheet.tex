@@ -4,7 +4,7 @@
 \usepackage{ifthen}
 \usepackage[landscape]{geometry}
 \usepackage{graphicx}
-\usepackage{amsmath, amssymb, amsthm}
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
 \usepackage{latexsym, marvosym}
 \usepackage{pifont}
 \usepackage{lscape}
@@ -89,6 +89,10 @@
 {\color{cyan}\normalfont\normalsize\bfseries}
 {\color{cyan}\thesection}{1em}{}
 % Comment out the above 5 lines for black and white
+
+% Command pandoc tightlist: https://tex.stackexchange.com/a/258486 
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \begin{document}
 
@@ -585,26 +589,49 @@ For continuous random variables:
 \begin{description}
     \label{one variable transformations}
     \item[One Variable Transformations] Let's say that we have a random variable $X$ with PDF $f_X(x)$, but we are also interested in some function of $X$. We call this function $Y = g(X)$. Also let $y=g(x)$. If $g$ is differentiable and strictly increasing (or strictly decreasing), then the PDF of $Y$ is
-    \[f_Y(y) = f_X(x)\left|\frac{dx}{dy}\right| =  f_X(g^{-1}(y))\left|\frac{d}{dy}g^{-1}(y)\right|\]
+    \[f_Y(y) = f_X(x)\left|\frac{dx}{dy}\right| = 
+        f_X(g^{-1}(y))\left|\frac{d}{dy}g^{-1}(y)\right|\]
     The derivative of the inverse transformation is called the \textbf{Jacobian}.
 
-
-     \item[Two Variable Transformations] Similarly, let's say we know the joint PDF of $U$ and $V$ but are also interested in the random vector $(X, Y)$ defined by $(X, Y) = g(U, V)$. Let 
-       $$  \frac{\partial (u,v)}{\partial (x,y)}  = \begin{pmatrix} 
-              \frac{\partial u}{\partial x} &  \frac{\partial u}{\partial y} \\
-           \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}   \\
-        \end{pmatrix}$$
-     be the \textbf{Jacobian matrix}. If the entries in this matrix exist and are continuous, and the determinant of the matrix is never $0$, then
-     \[f_{X,Y}(x, y) = f_{U,V}(u,v) \left|\left|   \frac{\partial (u,v)}{\partial (x,y)}\right| \right| \]
-   The inner bars tells us to take the matrix's determinant, and the outer bars tell us to take the absolute value.  In a $2 \times 2$ matrix, 
-     \[ \left| \left|
-     \begin{array}{ccc}
-         a & b \\
-         c & d
-     \end{array}
-     \right| \right| = |ad - bc|\]
+    \item[Two Variable Transformations] 
+    Let $X$ and $Y$ be two jointly continuous random variables. Let $$(Z,W)=g(X,Y)=(g1(X,Y),g2(X,Y))$$ 
+    where $g:\mathbb{R}^2 \to \mathbb{R}^2 $ is a continuous one-to-one (invertible) function with continuous partial derivatives. Let $h=g^{-1}$, i.e., 
+    $$(X,Y)=h(Z,W)=(h1(Z,W),h2(Z,W))$$
+    Then $Z$ and $W$ are jointly continuous and their joint PDF, $f_{ZW}(z,w)$, for $(z,w) \in R_{ZW}$ is given by
+    $$f_{ZW}(z,w)=f_{XY}(h_1(z,w),h_2(z,w))|J|$$
+    where $J$ is the Jacobian of $h$ defined by,
+    $$
+    J = \det  \begin{bmatrix}
+        \frac{\partial h_1}{\partial z} & \frac{\partial h_1}{\partial w}  \\
+        \frac{\partial h_2}{\partial z}  & \frac{\partial h_2}{\partial w}  \\
+      \end{bmatrix}
+      = \frac{\partial h_1}{\partial z}.\frac{\partial h_2}{\partial w}-\frac{\partial h_2}{\partial z}\frac{\partial h_1}{\partial w}
+    $$
+    
+    % Similarly, let's say we know the joint PDF of $U$ and $V$ but are also interested in the random vector $(X, Y)$ defined by $(X, Y) = g(U, V)$. Let 
+    % $$  
+    % J = \det \frac{\partial (u,v)}{\partial (x,y)}  = 
+    %     \det \begin{pmatrix} 
+    %         \frac{\partial u}{\partial x} &  \frac{\partial u}{\partial y} \\
+    %         \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}  \\
+    %     \end{pmatrix}
+    % $$
+    % be the \textbf{Jacobian matrix}. If the entries in this matrix exist and are continuous, and the determinant of the matrix is never $0$, then
+    % \[f_{X,Y}(x, y) = f_{U,V}(u,v) \left|J\right| \]
+%   The inner bars tells us to take the matrix's determinant, and the outer bars tell us to take the absolute value.  In a $2 \times 2$ matrix, 
+%      \[ \left| \left|
+%      \begin{array}{ccc}
+%          a & b \\
+%          c & d
+%      \end{array}
+%      \right| \right| = |ad - bc|\]
 
 \end{description}
+
+If $X \sim N(\mu_X,\sigma_X^2)$ and $Y \sim N(\mu_Y,\sigma_Y^2)$ are independent, then they are jointly normal.
+Correlation matrix of X: $\mathbf{R_X=E[X X^{T}]}$
+Covariance matrix of X: $\mathbf{C_X=E[(X-EX)(X-EX)^{T}]=R_X-EX EX^T}$
+Let $G:\mathbb{R}^n \to \mathbb{R}^n$ be a continuous and invertible function with continuous partial derivatives and let $H=G^{-1}$. Let $\mathbf{Y}=G(\mathbf{X})$ and $\mathbf{X}=G^{-1}(\mathbf{Y})=H(\mathbf{Y}) = [H_1(\mathbf{Y}), \dots H_n(\mathbf{Y})]^T$.
 
 \label{convolutions}
 \subsection{Convolutions}
@@ -613,6 +640,48 @@ For continuous random variables:
         \[f_{X+Y}(t)=\int_{-\infty}^\infty f_X(x)f_Y(t-x)dx\]
     \item[Example] Let $X,Y \sim \N(0,1)$ be i.i.d. Then for each fixed $t$,\[f_{X+Y}(t)=\int_{-\infty}^\infty \frac{1}{\sqrt{2\pi}}e^{-x^2/2} \frac{1}{\sqrt{2\pi}}e^{-(t-x)^2/2} dx\]
 By completing the square and using the fact that a Normal PDF integrates to $1$, this works out to $f_{X+Y}(t)$ being the $\N(0,2)$ PDF.
+\end{description}
+
+\section{Random Vectors}\smallskip \hrule height 2pt \smallskip
+Let $\mathbf{X} = [X_{1}, X_{2}, \ldots, X_{n}]^T$ and $\mathbf{Y} = [Y_{1}, Y_{2}, \ldots, Y_{n}]^T$ be random vectors. Then they have the following properties:
+\begin{description}
+    \item[CDF] 
+        $F_{\mathbf{X}}(\mathbf{x}) =F_{X_{1}, \ldots, X_{n}}\left(x_{1}, \ldots, x_{n}\right) = P\left(X_{1} \leq x_{1}, \ldots, X_{n} \leq x_{n}\right)$
+    \item[PDF] 
+        $f_{\mathbf{X}}(\mathbf{x})=f_{X_{1}, X_{2}, \ldots, X_{n}}\left(x_{1}, x_{2}, \ldots, x_{n}\right)$ (for jointly continuous $X_{i}$'s)
+    \item[Expectation] 
+        $\mathbf{E}\mathbf{X} = [EX_{1}, EX_{2}, \ldots, EX_{n}]^T$
+    \item[Correlation] 
+        $\mathbf{R}_{\mathbf{X}}=\mathbf{E}\left[\mathbf{X} \mathbf{X}^{\mathrm{T}}\right]$ where $[\mathbf{R}_{\mathbf{X}}]_{ij} = E[X_i X_j]$. Properties:
+        \begin{itemize}
+            \item $\mathbf{R}_{\mathbf{X}}$ is \textbf{positive semidefinite}.
+            \item $\mathbf{R}_{\mathbf{X}}$ is \textbf{positive definite} if and only if all its eigenvalues are positive or equivalently $\operatorname{det}\left(\mathbf{C}_{\mathbf{X}}\right)>0$.
+        \end{itemize}
+    \item[Covariance] 
+        $\mathbf{C}_{\mathbf{X}}=\mathbf{E}\left[(\mathbf{X}-\mathbf{E} \mathbf{X})(\mathbf{X}-\mathbf{E} \mathbf{X})^{\mathrm{T}}\right]=\mathbf{R}_{\mathbf{X}}-\mathbf{E} \mathbf{X} \mathbf{E} \mathbf{X}^{\mathbf{T}}$ where $[\mathbf{C}_{\mathbf{X}}]_{ij} = Cov[X_i, X_j] = E[X_i X_j] - E[X_i] E[X_j]$.
+    \item[Cross-covariance] 
+        $\mathbf{R}_{\mathbf{X Y}}=\mathbf{E}\left[\mathbf{X} \mathbf{Y}^{\mathbf{T}}\right]$
+    \item[Cross-correlation] 
+        $\mathbf{C}_{\mathbf{X Y}}=\mathbf{E}\left[(\mathbf{X}-\mathbf{E X})(\mathbf{Y}-\mathbf{E Y})^{\mathbf{T}}\right]$
+    \item[Method of Transformations] Let $\mathbf{Y}=G(\mathbf{X})$ where $G: \mathbb{R}^{n} \mapsto \mathbb{R}^{n}$ is a continuous and invertible function with continuous partial derivatives and let $H=G^{-1}$ so that $\mathbf{X}=G^{-1}(\mathbf{Y})=H(\mathbf{Y})$. Then, the PDF of $Y$ is given by
+    \[
+        f_{\mathbf{Y}}(\mathbf{y})=f_{\mathbf{X}}(H(\mathbf{y}))|J|
+    \]
+    where $J$ is the Jacobian of $H$ defined by
+    \[
+        J=\det \left[\begin{array}{cccc}
+        \frac{\partial H_{1}}{\partial y_{1}} & \frac{\partial H_{1}}{\partial y_{2}} & \cdots & \frac{\partial H_{1}}{\partial y_{n}} \\
+        \frac{\partial H_{2}}{\partial y_{1}} & \frac{\partial H_{2}}{\partial y_{2}} & \cdots & \frac{\partial H_{2}}{\partial y_{n}} \\
+        \vdots & \vdots & \vdots & \vdots \\
+        \frac{\partial H_{n}}{\partial y_{1}} & \frac{\partial H_{n}}{\partial y_{2}} & \cdots & \frac{\partial H_{n}}{\partial y_{n}}
+        \end{array}\right]
+    \]
+    \item[Linear Transformation] If $\mathbf{Y} = \mathbf{AX + b}$ then 
+    \begin{enumerate}
+            \item $\mathbf{EY} = \mathbf{AEX + b}$
+            \item $\mathbf{C}_{\mathbf{Y}}=\mathbf{A} \mathbf{C}_{\mathbf{X}} \mathbf{A}^{\mathbf{T}}$
+            \item $f_{\mathbf{Y}}(\mathbf{y})=\frac{1}{|\det{\mathbf{A}}|} f_{\mathbf{X}}\left(\mathbf{A}^{-1}(\mathbf{y}-\mathbf{b})\right)$
+    \end{enumerate}
 \end{description}
 
 \section{Poisson Process}\smallskip \hrule height 2pt \smallskip
@@ -700,33 +769,111 @@ Thus we have $T_1 \sim \Expo(\lambda)$. By the memoryless property and similar r
 \end{description}
 
 
-\section{MVN, LLN, CLT}\smallskip \hrule height 2pt \smallskip
+\hypertarget{convergence-of-random-variables}{%
+\section{Convergence of Random
+Variables}\label{convergence-of-random-variables}}\smallskip \hrule height 2pt \smallskip
 
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=1.8in]{figures/diff_types_of_convgnc_color.png}
+\end{minipage}
+
+Convergence of a sequence of random variables \(X1, X2, X3, \dots \) to
+random variable \(X\).
+
+\hypertarget{convergence-in-distribution}{%
+\subsection{Convergence in
+distribution}\label{convergence-in-distribution}}
+
+\begin{description}
+\item[Notation] \(X_n \ \xrightarrow{L^{\large r}}\ X\)
+\item[Meaning] \(\lim_{n \rightarrow \infty} F_{X_n}(x)=F_X(x)\), for all \(x\) at which \(F_X(x)\) is continuous.
+\item[Examples] \emph{Central Limit Theorem}
+\end{description}
+
+\hypertarget{convergence-in-probability}{%
+\subsection{Convergence in
+probability}\label{convergence-in-probability}}
+
+\begin{description}
+\item[Notation] \(X_n \ \xrightarrow{L^{\large r}}\ X\) if,
+\item[Meaning] \(\lim_{n \rightarrow \infty} P\big(|X_n-X| \geq \epsilon \big)=0, \qquad \textrm{ for all }\epsilon>0\)
+\item[Examples] \emph{Weak Law of large Numbers}
+\end{description}
+
+\hypertarget{convergence-in-mean}{%
+\subsection{Convergence in mean:}\label{convergence-in-mean}}
+
+\begin{description}
+\item[Notation] \(X_n \ \xrightarrow{L^{\large r}}\ X\) if,
+\item[Meaning] \(\lim_{n \rightarrow \infty} E\left(|X_n-X|^{\large r}\right)=0\)
+\item[mean-square convergence] \(X_n \ \xrightarrow{m.s.}\ X\) is defined as \(X_n \ \xrightarrow{L^{\large 2}}\ X\)
+\end{description}
+
+\hypertarget{almost-sure-convergence}{%
+\subsection{Almost sure convergence}\label{almost-sure-convergence}}
+
+\begin{description}
+\item[Notation] \(X_n \ \xrightarrow{a.s.}\ X\)
+\item[Meaning] \(P\left( \left\{s \in S: \lim_{n\rightarrow \infty} X_n(s)=X(s)\right\}\right)=1\), where \(S\) is the sample space of \(X_i\) and \(X\)
+\item[Criteria] Criteria for a.s. convergence:
+  \begin{itemize}
+  \tightlist
+  \item \(X_n \ \xrightarrow{a.s.}\ X\) if \(\sum_{n=1}^{\infty} P\big(|X_n-X| > \epsilon \big) < \infty, \qquad \textrm{ for all }\epsilon>0\)
+  \item \(X_n \ \xrightarrow{a.s.}\ X\) \emph{iff} \(\lim_{m\rightarrow \infty} P(A_m) =1, \qquad \textrm{ for all }\epsilon>0\) where,
+    \(A_m=\{|X_n-X|< \epsilon, \qquad \textrm{for all }n \geq m \}.\)
+  \end{itemize}
+\item[Examples] \emph{Strong Law of large Numbers}
+\end{description}
+
+\hypertarget{continuous-mapping-theorem}{%
+\subsection{Continuous Mapping
+Theorem}\label{continuous-mapping-theorem}}
+
+\begin{itemize}
+\tightlist
+\item For a \emph{continuous} \(h: \mathbb{R} \mapsto \mathbb{R}\)
+\item \(X_n \ \xrightarrow{d}\ X \implies h(X_n) \ \xrightarrow{d}\ h(X)\)
+\item \(X_n \ \xrightarrow{p}\ X \implies h(X_n) \ \xrightarrow{p}\ h(X)\)
+\item \(X_n \ \xrightarrow{a.s.}\ X \implies h(X_n) \ \xrightarrow{a.s.}\ h(X)\)
+\end{itemize}
+
+
+\section{Limit Theorems}\smallskip \hrule height 2pt \smallskip
 \subsection{Law of Large Numbers (LLN)}
-Let $X_1, X_2, X_3 \dots$ be i.i.d.~with mean $\mu$. The \textbf{sample mean} is $$\bar{X}_n = \frac{X_1 + X_2 + X_3 + \dots + X_n}{n}$$ The \textbf{Law of Large Numbers} states that as $n \to \infty$, $\bar{X}_n \to \mu$ with probability $1$. For example, in flips of a coin with probability $p$ of Heads, let $X_j$ be the indicator of the $j$th flip being Heads.  Then LLN says the proportion of Heads converges to $p$ (with probability $1$).
+Let $X_1, X_2, \dots, X_n$ be i.i.d. r.v.s and let be $\bar{X}_n = \frac{X_1 + X_2 + \dots + X_n}{n}$ be the \textbf{sample mean}. Then the two variants of the \textbf{Law of Large Numbers} are:
+\begin{description}
+    \item[Weak (WLLN)] $\bar{X}_n \xrightarrow{p} E[X_1]$
+    \item[Strong (SLLN)] $\bar{X}_n \xrightarrow{a.s.} E[X_1]$
+\end{description}
 
 \subsection{Central Limit Theorem (CLT)}
-\subsubsection{Approximation using CLT}
-We use $\dot{\,\sim\,}$ to denote \emph{is approximately distributed}. We can use the \textbf{Central Limit Theorem} to approximate the distribution of a random variable $Y=X_1+X_2+\dots+X_n$ that is a sum of $n$ i.i.d. random variables $X_i$. Let  $E(Y) = \mu_Y$ and $\var(Y) = \sigma^2_Y$. The CLT says
-\[Y \dot{\,\sim\,} \N(\mu_Y, \sigma^2_Y)\]
-If the $X_i$ are i.i.d.~with mean $\mu_X$ and variance $\sigma^2_X$, then $\mu_Y = n \mu_X$ and $\sigma^2_Y = n \sigma^2_X$. For the sample mean $\bar{X}_n$, the CLT says
-\[ \bar{X}_n = \frac{1}{n}(X_1 + X_2 + \dots + X_n) \dot{\,\sim\,} \N(\mu_X, \sigma^2_X/n) \]
+Let $X_1, X_2, \dots, X_n$ be i.i.d. with expected value $E[X_i] = \mu < \infty$ and variance $0 < Var[X_i] = \sigma^2 < \infty$ and let be $\bar{X}_n = \frac{X_1 + X_2 + \dots + X_n}{n}$ be the \textbf{sample mean}. Then, the random variable, 
+\[ Z_{\large n}=\frac{\overline{X}-\mu}{ \sigma / \sqrt{n}}=\frac{X_1+X_2+...+X_{\large n}-n\mu}{\sqrt{n} \sigma} \]
+converges in distribution to the standard normal random variable as $n \to \infty$, i.e. $Z_n \xrightarrow{d} \N(0, 1)$ or,
+\[ \lim_{n \rightarrow \infty} P(Z_{\large n} \leq x)=\Phi(x), \qquad \textrm{ for all }x \in \mathbb{R} \]
+where $\Phi(x)$ is the standard normal CDF. 
+% \subsubsection{Approximation using CLT}
+% We use $\dot{\,\sim\,}$ to denote \emph{is approximately distributed}. We can use the \textbf{Central Limit Theorem} to approximate the distribution of a random variable $Y=X_1+X_2+\dots+X_n$ that is a sum of $n$ i.i.d. random variables $X_i$. Let  $E(Y) = \mu_Y$ and $\var(Y) = \sigma^2_Y$. The CLT says
+% \[Y \dot{\,\sim\,} \N(\mu_Y, \sigma^2_Y)\]
+% If the $X_i$ are i.i.d.~with mean $\mu_X$ and variance $\sigma^2_X$, then $\mu_Y = n \mu_X$ and $\sigma^2_Y = n \sigma^2_X$. For the sample mean $\bar{X}_n$, the CLT says
+% \[ \bar{X}_n = \frac{1}{n}(X_1 + X_2 + \dots + X_n) \dot{\,\sim\,} \N(\mu_X, \sigma^2_X/n) \]
 
 
-\subsubsection{Asymptotic Distributions using CLT}
+% \subsubsection{Asymptotic Distributions using CLT}
 
-We use $\xrightarrow{D}$ to denote \emph{converges in distribution to} as $n  \to \infty$. The CLT says that if we standardize the sum $X_1 + \dots + X_n$  then the distribution of the sum converges to $\N(0,1)$ as $n \to \infty$:
-\[\frac{1}{\sigma\sqrt{n}} (X_1 + \dots + X_n - n\mu_X) \xrightarrow{D} \N(0, 1)\]
-In other words, the CDF of the left-hand side goes to the standard Normal CDF, $\Phi$. In terms of the sample mean, the CLT says
-\[ \frac{\sqrt{n} (\bar{X}_n - \mu_X)}{\sigma_X} \xrightarrow{D} \N(0, 1)\]
+% We use $\xrightarrow{D}$ to denote \emph{converges in distribution to} as $n  \to \infty$. The CLT says that if we standardize the sum $X_1 + \dots + X_n$  then the distribution of the sum converges to $\N(0,1)$ as $n \to \infty$:
+% \[\frac{1}{\sigma\sqrt{n}} (X_1 + \dots + X_n - n\mu_X) \xrightarrow{D} \N(0, 1)\]
+% In other words, the CDF of the left-hand side goes to the standard Normal CDF, $\Phi$. In terms of the sample mean, the CLT says
+% \[ \frac{\sqrt{n} (\bar{X}_n - \mu_X)}{\sigma_X} \xrightarrow{D} \N(0, 1)\]
 
 \section{Markov Chains}\smallskip \hrule height 2pt \smallskip
 
 \subsection{Definition}
 \begin{minipage}{\linewidth}
-            \centering
-\includegraphics[width=2.3in]{figures/chainA.pdf}
-        \end{minipage}
+    \centering
+    \includegraphics[width=2.3in]{figures/chainA.pdf}
+\end{minipage}
 A Markov chain is a random walk in a \textbf{state space}, which we will assume is finite, say $\{1, 2, \dots, M\}$. We let $X_t$ denote which element of the state space the walk is visiting at time $t$. The Markov chain is the sequence of random variables tracking where the walk is at all points in time, $X_0, X_1, X_2, \dots$. By definition, a Markov chain must satisfy the \textbf{Markov property}, which says that if you want to predict where the chain will be at a future time, if we know the present state then the entire past history is irrelevant.  \emph{Given the present, the past and future are conditionally independent}. In symbols,
 \[P(X_{n+1} = j | X_0 = i_0, X_1 = i_1, \dots, X_n = i) = P(X_{n+1} = j | X_n = i)\]
 \subsection{State Properties}
@@ -774,10 +921,10 @@ For irreducible, aperiodic chains, the stationary distribution exists, is unique
 \textbf{Reversibility Condition Implies Stationarity}  If you have a PMF $\vec{s}$ and a Markov chain with transition matrix $Q$, then $s_iq_{ij} = s_jq_{ji}$ for all states $i, j$ implies that $\vec{s}$ is stationary.
 
 \subsection{Random Walk on an Undirected Network}
- \begin{minipage}{\linewidth}
-            \centering
-\includegraphics[width=1.6in]{figures/network1.pdf}
-        \end{minipage}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=1.6in]{figures/network1.pdf}
+\end{minipage}
 \medskip
 
 If you have a collection of \textbf{nodes}, pairs of which can be connected by undirected \textbf{edges}, and a Markov chain is run by going from the current node to a uniformly random node that is connected to it by an edge, then  this is a random walk on an undirected network. The stationary distribution of this chain is proportional to the \textbf{degree sequence} (this is the sequence of degrees, where the degree of a node is how many edges are attached to it). For example, the stationary distribution of random walk on the network shown above is proportional to $(3,3,2,4,2)$, so it's $(\frac{3}{14}, \frac{3}{14}, \frac{2}{14}, \frac{4}{14}, \frac{2}{14})$. 
@@ -830,6 +977,8 @@ If you have a collection of \textbf{nodes}, pairs of which can be connected by u
 
 \subsection{Normal Distribution} Let us say that $X$ is distributed $\N(\mu, \sigma^2)$. We know the following:
 \begin{description}
+    \item[PDF] $f_X(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\sfrac{(x - \mu)^2}{(2 \sigma^2)}} \quad x \in (-\infty, \infty)$ 
+    \item[Moments] $E[X]=\mu \quad Var[X] = \sigma^2$
     \item[Central Limit Theorem] The Normal distribution is ubiquitous because of the Central Limit Theorem, which states that the sample mean of i.i.d.~r.v.s will approach a Normal distribution as the sample size grows, regardless of the initial distribution.
     \item[Location-Scale Transformation] Every time we shift a Normal r.v.~(by adding a constant) or rescale a Normal (by multiplying by a constant), we change it to another Normal r.v. For any Normal $X \sim \N(\mu, \sigma^2)$, we can transform it to the standard $\N(0, 1)$ by the following transformation:
     \[Z= \frac{X - \mu}{\sigma} \sim \N(0, 1) \]
@@ -841,10 +990,12 @@ If you have a collection of \textbf{nodes}, pairs of which can be connected by u
 
 Let us say that $X$ is distributed $\Expo(\lambda)$. We know the following:
 \begin{description}
-    \item[Story] You're sitting on an open meadow right before the break of dawn, wishing that airplanes in the night sky were shooting stars, because you could really use a wish right now. You know that shooting stars come on average every 15 minutes, but a shooting star is  not ``due" to come just because you've waited so long. Your waiting time is memoryless;  the additional time until the next shooting star comes does not depend on how long you've waited already.
+    \item{Story} The amount of time until some specific event occurs, starting from now, being memoryless. \item{Example} The waiting time until the next shooting star appears.
+    % \item[Story] You're sitting on an open meadow right before the break of dawn, wishing that airplanes in the night sky were shooting stars, because you could really use a wish right now. You know that shooting stars come on average every 15 minutes, but a shooting star is  not ``due" to come just because you've waited so long. Your waiting time is memoryless;  the additional time until the next shooting star comes does not depend on how long you've waited already.
     
-    \item[Example] The waiting time until the next shooting star is distributed $\Expo(4)$ hours. Here $\lambda=4$ is the \textbf{rate parameter}, since shooting stars arrive at a rate of $1$ per $1/4$ hour on average. The expected time until the next shooting star is $1/\lambda = 1/4$ hour.
-    
+    % \item[Example] The waiting time until the next shooting star is distributed $\Expo(4)$ hours. Here $\lambda=4$ is the \textbf{rate parameter}, since shooting stars arrive at a rate of $1$ per $1/4$ hour on average. The expected time until the next shooting star is $1/\lambda = 1/4$ hour.
+    \item[PDF] $f_X(x) = \lambda e^{-\lambda x} \quad x \in (0, \infty)$ 
+    \item[Moments] $E[X]=\frac{1}{\lambda} \quad Var[X] = \frac{1}{\lambda^2}$
     \item[Expos as a rescaled Expo(1)]
         \[Y \sim \Expo(\lambda) \rightarrow X = \lambda Y \sim \Expo(1)\]
      
@@ -852,7 +1003,7 @@ Let us say that $X$ is distributed $\Expo(\lambda)$. We know the following:
 % \[f(x) = \lambda e^{-\lambda x}, x \in [0, \infty)\]
 % \[F(x) = P(X \leq x) = 1 - e^{-\lambda x}, x \in [0, \infty)\]
     
-    \item[Memorylessness] The Exponential Distribution is the only continuous memoryless distribution. The memoryless property says that for $X \sim \Expo(\lambda)$ and any positive numbers $s$ and $t$,
+    \item[Memoryless] This is the only continuous memoryless distribution. The memoryless property says that for $X \sim \Expo(\lambda)$ and any positive numbers $s$ and $t$,
     \[P(X > s + t | X > s) = P(X > t)\]
 Equivalently,
     \[X - a | (X > a) \sim \Expo(\lambda)\]
@@ -869,12 +1020,14 @@ Equivalently,
             \centering
 \includegraphics[width=1.9in]{figures/gammapdfs.pdf}
         \end{minipage}
-\medskip
-Let us say that $X$ is distributed $\Gam(a, \lambda)$. We know the following:
+% Let us say that $X$ is distributed $\Gam(n,\lambda)$. We know the following:
 \begin{description}
-    \item[Story] You sit waiting for shooting stars, where the waiting time for a star is distributed $\Expo(\lambda)$. You want to see $n$ shooting stars before you go home. The total waiting time for the $n$th shooting star is $\Gam(n,\lambda)$.
-    \item[Example]  You are at a bank, and there are 3 people ahead of you. The serving time for each person is Exponential with mean $2$ minutes. Only one person at a time can be served. The distribution of your waiting time until it's your turn to be served is $\Gam(3, \frac{1}{2})$.
-%     \item[PDF] The PDF of a Gamma is:
+    \item[Story] You sit waiting for shooting stars, where the waiting time for a star is distributed $\Expo(\lambda)$. You want to see $n$ shooting stars before you go home. The total waiting time for the $n$th shooting star is $\Gam(n,\lambda)$. If $Z_1,Z_2,\cdots,Z_n$ are independent r.v.s such that $Z_i \sim \Expo(\lambda)$, then the r.v. $X = Z_1 + Z_2 + \dots + Z_n$ is distributed $\Gam(n, \lambda)$.
+    % \item[Example]  You are at a bank, and there are 3 people ahead of you. The serving time for each person is Exponential with mean $2$ minutes. Only one person at a time can be served. The distribution of your waiting time until it's your turn to be served is $\Gam(3, \frac{1}{2})$.
+    \item[PDF] $f_X(x) = \frac{1}{\Gamma(a)}(\lambda x)^ae^{-\lambda x}\frac{1}{x}, \quad x \in [0, \infty)$
+    \item[Moments] $E[X] = \frac{a}{\lambda} \quad Var[X] = \frac{a}{\lambda^2}$
+
+%     The PDF of a Gamma is:
 % \begin{eqnarray*}
 % f(x) = \frac{1}{\Gamma(a)}(\lambda x)^ae^{-\lambda x}\frac{1}{x},
 % \hspace{.1 in}
@@ -910,28 +1063,23 @@ Then after observing  $X = x$, we get the posterior distribution
     This is known as the \textbf{bank--post office result}.
 \end{description}
 
+\subsection{Chi-Square ($\chi^2$) Distribution}
 
-% \[E(X) = \frac{a}{\lambda},  Var(X) = \frac{a}{\lambda^2}\]
-% \[X \sim G(a, \lambda),  Y \sim G(b, \lambda),  X \independent Y \rightarrow  X + Y \sim G(a + b, \lambda), \frac{X}{X + Y} \independent X + Y \]
-% \[X \sim \Gam(a, \lambda) \rightarrow X = X_1 + X_2 + ... + X_a \textnormal{ for $X_i$ i.i.d. $\Expo(\lambda)$} \]
-% \[\Gam(1, \lambda) \sim \Expo(\lambda) \]
-
-
-\subsection{$\chi^2$ (Chi-Square) Distribution}
-
-Let us say that $X$ is distributed $\chi^2_n$. We know the following:
+% Let us say that $X$ is distributed $\chi^2(n)$. We know the following:
 \begin{description}
-    \item[Story] A Chi-Square($n$) is the sum of the squares of $n$ independent standard Normal r.v.s.
-    %\item[Example]  The sum of squared errors are distributed $\chi^2_n$
-%     \item[PDF] The PDF of a $\chi^2_1$ is:
-% \begin{eqnarray*}
-% f(w) = \frac{1}{\sqrt{2\pi w}}e^{-w/2},
-% w \in [0, \infty)
-% \end{eqnarray*}
-    \item[Properties and Representations]
-\[X \textrm{ is distributed as } Z_1^2 + Z_2^2 + \dots + Z_n^2 \textrm{ for i.i.d.~$Z_i \sim \N(0,1)$}\]
-\[X \sim \Gam(n/2,1/2)\]
+    \item[Story] If $Z_1,Z_2,\cdots,Z_n$ are independent standard normal r.v.s, then the r.v. $X = Z_1^2 + Z_2^2 + \dots + Z_n^2$ is said to have a chi-squared distribution with $n$ \textit{degrees of freedom} shown by $X \sim \chi^2(n)$.  The chi-squared distribution is also a special case of the gamma distribution. More specifically, $\chi^2(n) = Gamma(\frac{n}{2}, \frac{1}{2})$.
+    \item[PDF] $f_X(x) = \frac{\Gamma((n+1)/2)}{\sqrt{n\pi} \Gamma(n/2)} (1+x^2/n)^{-(n+1)/2} \quad x \in (-\infty, \infty)$
+    \item[Moments] $E[X] = n \quad Var[X] = 2n$
 \end{description}
+
+\subsection{Student's t-Distribution}
+% Let us say that $X$ is distributed $\chi^2(n)$. We know the following:
+\begin{description}
+    \item[Story] If $Z \sim \N(0, 1)$ and $Y \sim \chi^2(n)$, where $n \in \mathbb{N}$ are independent r.v.s., then the r.v. $X = Z/\sqrt{Y/n}$ is said to have a t-distribution with $n$ \textit{degrees of freedom} shown by $X \sim T(n)$.
+    \item[PDF] $f_X(x) = \frac{1}{2^{\frac{n}{2}} \Gamma\left(\frac{n}{2}\right)} x^{\frac{n}{2}-1} e^{-\frac{x}{2}}, \quad x \in [0, \infty)$
+    \item[Moments] $E[X] = 0 \text{ if } n > 1 \quad Var[X] = \frac{n}{n-2} \text{ if } n > 2$
+\end{description}
+
 
 \section{Discrete Distributions} \smallskip \hrule height 2pt \smallskip
 
@@ -951,10 +1099,12 @@ Let us say that $X$ is distributed $\chi^2_n$. We know the following:
 \begin{description}
     \item[Story] A trial is performed with probability $p$ of ``success", and $X$ is the indicator of success: $1$ means success, $0$ means failure.
         \item[Example] Let $X$ be the indicator of Heads for a fair coin toss. Then $X \sim \Bern(\frac{1}{2})$. Also, $1-X  \sim \Bern(\frac{1}{2})$ is the indicator of Tails.
-        %     \item[PMF.] The probability mass function of a Bernoulli is:
+        \item[PMF] $P(X = x) = p^x(1-p)^{1-x}$
+        % \item[PMF.] The probability mass function of a Bernoulli is:
 % \[P(X = x) = p^x(1-p)^{1-x}\]
 % or simply
 % \[P(X = x) = \begin{cases} p, & x = 1 \\ 1-p, & x = 0 \end{cases}\]
+        \item[Moments] $E[X] = p \quad Var[X] = p(1-p)$
 \end{description}
 
 \subsection{Binomial Distribution} 
@@ -965,11 +1115,11 @@ Let us say that $X$ is distributed $\chi^2_n$. We know the following:
 
 Let us say that $X$ is distributed \Bin($n,p$). We know the following:
 \begin{description}
-    \item[Story] $X$ is the number of ``successes" that we will achieve in $n$ independent trials, where each trial is either a success or a failure, each with the same probability $p$ of success. We can also write $X$ as a sum of multiple independent $\Bern(p)$ random variables. Let $X \sim \Bin(n, p)$ and $X_j \sim \Bern(p)$, where all of the Bernoullis are independent. Then
+    \item[Story] $X$ is the number of "successes" that we will achieve in $n$ independent trials, where each trial is either a success or a failure, each with the same probability $p$ of success. We can also write $X$ as a sum of multiple independent $\Bern(p)$ random variables. Let $X \sim \Bin(n, p)$ and $X_j \sim \Bern(p)$, where all of the Bernoullis are independent. Then
         \[X = X_1 + X_2 + X_3 + \dots + X_n\]
     \item[Example] If Jeremy Lin makes 10 free throws and each one independently has a $\frac{3}{4}$ chance of getting in, then the number of free throws he makes is distributed  \Bin($10,\frac{3}{4}$).
-    %     \item[PMF] The probability mass function of a Binomial is:
-% \[P(X = x) = {n  \choose x} p^x(1-p)^{n-x}\]
+    \item[PMF] $P_X(k) = {n  \choose k} p^k(1-p)^{n-k} \quad \text{for  } k=0,1,2,\cdots,n$
+    \item[Moments] $E[X] = np \quad Var[X] = np(1-p)$
 \item[Properties] Let $X \sim \Bin(n,p), Y \sim \Bin(m,p)$ with $X \independent Y$.
 \begin{itemize}
 \item \textbf{Redefine success} $n-X \sim \Bin(n,1-p)$
@@ -982,10 +1132,10 @@ Let us say that $X$ is distributed \Bin($n,p$). We know the following:
 
 \subsection{Geometric Distribution} Let us say that $X$ is distributed $\Geom(p)$. We know the following:
 \begin{description}
-    \item[Story] $X$ is the number of ``failures" that we will achieve before we achieve our first success. Our successes have probability $p$.
+    \item[Story] $X$ is the number of "failures" that we will achieve before we achieve our first success. Our successes have probability $p$. \textbf{Memoryless}.
     \item[Example] If each pokeball we throw has probability  $\frac{1}{10}$ to catch Mew, the number of failed pokeballs will be distributed $\Geom(\frac{1}{10})$.
-%     \item[PMF] With $q = 1-p$, the probability mass function of a Geometric is:
-% \[P(X = k) = q^kp\]
+    \item[PDF] $P_X(k)=p(1-p)^{k-1} \quad k \in {1,2,3, \dots}$
+    \item[Moments] $E[X] = \frac{1}{p} \quad Var[X] = \frac{1-p}{p^2}$
 \end{description}
 
 \subsection{First Success Distribution} Equivalent to the Geometric distribution, except that it includes the first success in the count. This is 1 more than the number of failures. If $X \sim \textnormal{FS}(p)$ then $E(X) = 1/p$.
@@ -993,10 +1143,10 @@ Let us say that $X$ is distributed \Bin($n,p$). We know the following:
 
 \subsection{Negative Binomial Distribution} Let us say that $X$ is distributed $\NBin(r, p)$. We know the following:
 \begin{description}
-    \item[Story] $X$ is the number of ``failures" that we will have before we achieve our $r$th success. Our successes have probability $p$.
+    \item[Story] $X$ is the number of "failures" that we will have before we achieve our $r$th success. Our successes have probability $p$.
     \item[Example] Thundershock has 60\% accuracy and can faint a wild Raticate in 3 hits. The number of misses before Pikachu faints Raticate with Thundershock is distributed $\NBin(3, 0.6)$.
-%     \item[PMF] With $q = 1-p$, the probability mass function of a Negative Binomial is:
-% \[P(X = n) = {n+r - 1 \choose r -1}p^rq^n\]
+    \item[PMF] $P(X=k) = {r + k - 1 \choose k}p^r(1-p)^k \quad k \in \{$0, 1, 2, \dots $\}$
+    \item[Moments] $E[X] = \frac{r(1-p)}{p} \quad Var[X] = \frac{r(1-p)}{p^2}$
 \end{description}
 
 \subsection{Hypergeometric Distribution} Let us say that $X$ is distributed $\Hypergeometric(w, b, n)$. We know the following:
@@ -1010,6 +1160,8 @@ Let us say that $X$ is distributed \Bin($n,p$). We know the following:
     \item You have $w$ white balls and $b$ black balls, and you draw $n$ balls without replacement. The number of white balls in your sample is $\HGeom(w,b,n)$; the number of black balls is $\HGeom(b,w,n)$. 
     \item \textbf{Capture-recapture} A forest has $N$ elk, you capture $n$ of them, tag them, and release them. Then you recapture a new sample of size $m$. How many tagged elk are now in the new sample? $\HGeom(n,N-n,m)$
     \end{itemize} 
+    \item[PMF] $P_X(k) = \sfrac{{w \choose k}{b \choose n-k}}{{w + b \choose n}} \quad k \in \{0, 1, 2, \dots,  n\}$
+    \item[Moments] $E[X] = \frac{nw}{b+w} = \mu \quad Var[X] = \left(\frac{w+b-n}{w+b-1} \right) n\frac{\mu}{n}(1 - \frac{\mu}{n})$
 %    \item[PMF] The probability mass function of a Hypergeometric:
 %\[P(X = k) = \frac{{w \choose k}{b \choose n-k}}{{w + b \choose n}}\]
 \end{description}
@@ -1019,6 +1171,8 @@ Let us say that $X$ is distributed \Bin($n,p$). We know the following:
     \item[Story] There are rare events (low probability events) that occur many different ways (high possibilities of occurences) at an average rate of $\lambda$ occurrences per unit space or time. The number of events that occur in that unit of space or time is $X$.
     
     \item[Example] A certain busy intersection has an average of 2 accidents per month. Since an accident is a low probability event that can happen many different ways, it is reasonable to model the number of accidents in a month at that intersection as $\Pois(2)$. Then the number of accidents that happen in two months at that intersection is distributed $\Pois(4)$.
+    \item[PMF] $P_X(k) = \frac{\lambda^ke^{-\lambda}}{k!} \quad k \in \{$0, 1, 2, \dots $\}$ 
+    \item[Moments] $E[X] = \lambda \quad Var[X] = \lambda$
     
     \item[Properties]
 Let $X \sim \Pois(\lambda_1)$ and $Y \sim \Pois(\lambda_2)$, with $X \independent Y$.
@@ -1053,22 +1207,58 @@ Let $X \sim \Pois(\lambda_1)$ and $Y \sim \Pois(\lambda_2)$, with $X \independen
     \item[Variances and Covariances]  We have  $X_i \sim \Bin(n, p_i)$ marginally, so $\var(X_i) = np_i(1-p_i)$. Also, $\cov(X_i, X_j) = -np_ip_j$ for $i \neq j$.
     \end{description}
     
-\subsection{Multivariate Uniform Distribution}
-See the univariate Uniform for stories and examples. For the 2D Uniform on some region, probability is proportional to area. Every point in the support has equal density, of value $\frac{1}{\textnormal{area of region}}$. For the 3D Uniform, probability is proportional to volume.
+% \subsection{Multivariate Uniform Distribution}
+% See the univariate Uniform for stories and examples. For the 2D Uniform on some region, probability is proportional to area. Every point in the support has equal density, of value $\frac{1}{\textnormal{area of region}}$. For the 3D Uniform, probability is proportional to volume.
+
+\subsection{Bivariate Normal Distribution}
+Two random variables $X$ and $Y$ are said to be $bivariate normal$, or $jointly normal$, if $a X+b Y$ has a normal distribution for all $a, b \in \mathbb{R}$. Jointly normal $X$ and $Y$ have the \textbf{Bivariate Normal distribution} with parameters $\mu_{X}, \sigma_{X}^{2}, \mu_{Y}, \sigma_{Y}^{2}$, and $\rho$ and their joint PDF is given by
+$$
+\begin{array}{l}
+f_{X Y}(x, y)=\frac{1}{2 \pi \sigma_{X} \sigma_{Y} \sqrt{1-\rho^{2}}} \\
+\exp \left\{-\frac{1}{2\left(1-\rho^{2}\right)}\left[\left(\frac{x-\mu_{X}}{\sigma_{X}}\right)^{2}+\left(\frac{y-\mu_{Y}}{\sigma_{Y}}\right)^{2}-2 \rho \frac{\left(x-\mu_{X}\right)\left(y-\mu_{Y}\right)}{\sigma_{X} \sigma_{Y}}\right]\right\}
+\end{array}
+$$
+where $\mu_{X}, \mu_{Y} \in \mathbb{R}, \sigma_{X}, \sigma_{Y}>0$ and $\rho \in(-1,1)$ are the means, variances and correlation coefficient of $X$ and $Y$. Properties of jointly normal $X$ and $Y$:
+\begin{itemize}
+    \item If $X$ and $Y$ are jointly normal random variables with parameters $\mu_{X}, \sigma_{X^{\prime}}^{2}$ $\mu_{Y}, \sigma_{Y}^{2},$ and $\rho .$ Then, given $X=x, Y$ is normally distributed with
+$$
+\begin{array}{l}
+E[Y \mid X=x]=\mu_{Y}+\rho \sigma_{Y} \frac{x-\mu_{X}}{\sigma_{X}} \\
+\operatorname{Var}(Y \mid X=x)=\left(1-\rho^{2}\right) \sigma_{Y}^{2}
+\end{array}
+$$
+    \item If $X, Y \sim \mathcal{N}(0 ,1)$, then,
+    $$  
+    f_{XY}(x,y) = \frac{1}{2 \pi \sqrt{1-\rho^2}} \exp{\left(-\frac{1}{2 (1-\rho^2)} (x^2+y^2-2 \rho xy)\right)}
+    $$
+\end{itemize}
 
 \subsection{Multivariate Normal (MVN) Distribution}
-A  vector $\vec{X} = (X_1, X_2, \dots, X_k)$ is  Multivariate Normal if every linear combination is Normally distributed, i.e., $t_1X_1 + t_2X_2 + \dots + t_kX_k$ is Normal for any constants $t_1, t_2, \dots, t_k$. The parameters of the Multivariate Normal are the \textbf{mean vector} $\vec{\mu} = (\mu_1, \mu_2, \dots, \mu_k)$ and the \textbf{covariance matrix} where the $(i, j)$ entry is $\cov(X_i, X_j)$. 
+A random vector $\mathbf{X} = (X_1, X_2, \dots, X_k)$ is said to be \textbf{Normal} or \textbf{Gaussian} if the random variables $X_{1}, X_{2}, \ldots, X_{n}$ are \textbf{jointly normal} i.e. the random variable $\sum\limits_{i=1}^{n} a_{i} X_{i}$ is normal $\forall a_{i} \in \mathbb{R}$, . 
+A normal random vector $X$ has the \textbf{Multivariate Normal distribution} $\mathcal{N}(\mathbf{m}, \mathbf{C})$ with mean $\mathbf{m} = \mathbf{EX}$ and covariance matrix $\mathbf{C} = \mathbf{C}_\mathbf{x}$. Its PDF is given by,
+\[
+f_{\mathbf{X}}(\mathbf{x})=\frac{1}{(2\pi)^{\large{\frac{n}{2}}} \sqrt{\det\mathbf{C}}} \exp \left\{-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{C}^{-1}(\mathbf{x}-\mathbf{m}) \right\}
+\]
 
-\begin{description}
-\item[Properties] The Multivariate Normal has the following properties.
+Further, a random vector $\mathbf{Z} = (Z_1, Z_2, \dots, Z_k)$ is said to be \textbf{standard normal} if $Z_{i}$'s are i.i.d. and $Z_{i} \sim \mathcal{N}(0,1)$. A standard normal vector has $\mathcal{N}(\mathbf{0}, \mathbf{I})$ distribution (where $I$ is the identity matrix) i.e. its PDF is,
+\[
+f_{\mathbf{Z}}(\mathbf{z})=\frac{1}{(2 \pi)^{\frac{n}{2}}} \exp \left\{-\frac{1}{2} \mathbf{z}^{T} \mathbf{z}\right\}
+\]
+
+Properties:
 \begin{itemize}
-\item Any subvector is also MVN.
-\item If any two elements within an MVN are uncorrelated, then they are independent.
-\item The joint PDF of a Bivariate Normal $(X,Y)$ with $\N(0,1)$ marginal distributions and correlation $\rho \in (-1,1)$ is 
-$$  f_{X,Y}(x,y) = \frac{1}{2 \pi \tau} \exp{\left(-\frac{1}{2 \tau^2} (x^2+y^2-2 \rho xy)\right)},$$
-with $\tau = \sqrt{1-\rho^2}.$ 
+    \item Any subvector of a normal random vector is also normal.
+    \item $\mathbf{X}$ is normal i.e. $\mathbf{X} \sim \mathcal{N}(\mathbf{m}, \mathbf{C})$ iff there exists a standard normal $\mathbf{Z}$ s.t. $\mathbf{X = AZ + m}$ where $\mathbf{A}$ is a matrix s.t. $\mathbf{A} \mathbf{A}^{T}= \mathbf{A}^{T}\mathbf{A}=\mathbf{C}$. Note that if $\operatorname{svd}(\mathbf{C})=\mathbf{Q} \mathbf{D} \mathbf{Q}^T$ then $\mathbf{A}=\mathbf{Q} \mathbf{D}^{\frac{1}{2}} \mathbf{Q}^T$. This thus gives a way to generate arbitrary normal $\mathbf{X}$ from a standard normal $\mathbf{Z}$.
+    
+    \item For a normal $\mathbf{X} = [X_1, X_2, \dots, X_k]^T$, following are equivalent:
+        \begin{enumerate}
+            \item $X_i$'s are independent 
+            \item $X_i$'s are uncorrelated
+            \item $\mathbf{C_X}$ is diagonal.
+        \end{enumerate}
+        Note that the above equivalence also holds for all subsets of $X_i$'s as well.
+    \item If $\mathbf{X} \sim N(\mathbf{m}, {C})$ then $\mathbf{Y=A X+b} \sim N(\mathbf{A}E\mathbf{X}+\mathbf{b},\mathbf{A} \mathbf{C} \mathbf{A}^T)$
 \end{itemize}
-\end{description}
 
 \section{Distribution Properties} \smallskip \hrule height 2pt \smallskip
 \subsection{Important CDFs}
@@ -1093,16 +1283,19 @@ A convolution of $n$ random variables is simply their sum. For the following res
     \item $\Bin(1, p) \sim \Bern(p)$
     \item $\Beta(1, 1) \sim \Unif(0, 1)$
     \item $\Gam(1, \lambda) \sim \Expo(\lambda)$
-    \item $\chi^2_n \sim \Gam\left(\frac{n}{2}, \frac{1}{2}\right)$
+    \item $\chi^2(n) \sim \Gam\left(\frac{n}{2}, \frac{1}{2}\right)$
     \item $\NBin(1, p) \sim \Geom(p)$
 \end{enumerate}
 
 \subsection{Inequalities}
-
 \begin{enumerate}
 \item \textbf{Cauchy-Schwarz} $|E(XY)| \leq \sqrt{E(X^2)E(Y^2)}$
+\item \textbf{Union-bound} $P\biggl(\bigcup_{i=1}^n A_i\biggr) \leq \sum_{i=1}^n P(A_i)$ for any events $A\_1, A\_2, ..., A_n$. Can be generalised using \textit{Inclusion-Exclusion Principle}
 \item \textbf{Markov} $P(X \geq a) \leq \frac{E|X|}{a}$ for $a>0$
-\item \textbf{Chebyshev} $P(|X - \mu| \geq a) \leq \frac{\sigma^2}{a^2}$ for $E(X)=\mu, \var(X) = \sigma^2$
+\item \textbf{Chebyshev} $P(|X - E[X]| \geq a) \leq \frac{Var[X]}{a^2}$ for $a>0$
+\item \textbf{Chernoff} Let $M_X(s) = E[e^{sX}]$ be MGF. Then, \\
+$P(X \geq a)\leq e^{-sa}M_X(s), \qquad \textrm{for all } s>0$ \\
+$P(X \leq a)\leq e^{-sa}M_X(s), \qquad \textrm{for all } s<0$
 \item \textbf{Jensen} $E(g(X)) \geq g(E(X))$ for $g$ convex; reverse if $g$ is concave
 \end{enumerate}
 
@@ -1117,8 +1310,8 @@ A convolution of $n$ random variables is simply their sum. For the following res
 
 \subsection{Gamma and Beta Integrals}
 You can sometimes solve complicated-looking integrals by pattern-matching to a gamma or beta integral:
-\[ \int_0^\infty x^{t-1}e^{-x}\, dx = \Gamma(t) \hspace{1 cm} \int_0^1 x^{a - 1}(1-x)^{b-1}\, dx = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a + b)} \]
-Also, $\Gamma(a+1) = a \Gamma(a)$, and $\Gamma(n) = (n - 1)!$ if $n$ is a positive integer. 
+\[ \Gamma(\alpha) = \int_0^\infty t^{\alpha-1}e^{-t}\, dt \quad B(\alpha, \beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha + \beta)} = \int_0^1 t^{\alpha - 1}(1-t)^{\beta-1}\, dx \]
+Also, $\Gamma(\alpha+1) = \alpha \Gamma(\alpha)$, and $\Gamma(n) = (n - 1)!$ if $n$ is a positive integer. 
 \subsection{Euler's Approximation for Harmonic Sums}
 \[ 1 + \frac{1}{2} + \frac{1}{3} + \dots + \frac{1}{n} \approx \log n + 0.577 \dots\]
 \subsection{Stirling's Approximation for Factorials}
@@ -1266,11 +1459,11 @@ Contributions from Jessy Hwang
 \item \textbf{Don't pull non-linear functions out of expectations.} $E(g(X))$ does not equal $g(E(X))$ in general. The St. Petersburg paradox is an extreme example.  See also Jensen's inequality. The right way to find $E(g(X))$ is with \hyperref[lotus]{LOTUS}.
 \end{enumerate}
 
-\vspace{1.5in}
+% \vspace{1.5in}
 
 \section{Distributions in R} \smallskip \hrule height 2pt \smallskip
 
-\bigskip
+% \bigskip
 
 \begin{center}
 \begin{tabular}{cc}
@@ -1287,7 +1480,7 @@ Contributions from Jessy Hwang
 \texttt{dnbinom(k,r,p)} & PMF $P(X=k)$ for $X \sim \NBin(r,p)$\\
 \texttt{dpois(k,r)} & PMF $P(X=k)$ for $X \sim \Pois(r)$\\
 \texttt{dbeta(x,a,b)} & PDF $f(x)$ for $X \sim \Beta(a,b)$\\
-\texttt{dchisq(x,n)} & PDF $f(x)$ for $X \sim \chi^2_n$\\
+\texttt{dchisq(x,n)} & PDF $f(x)$ for $X \sim \chi^2(n)$\\
 \texttt{dexp(x,b)} & PDF $f(x)$ for $X \sim \Expo(b)$\\
 \texttt{dgamma(x,a,r)} & PDF $f(x)$ for $X \sim \Gam(a,r)$\\
 \texttt{dlnorm(x,m,s)} & PDF $f(x)$ for $X \sim \mathcal{LN}(m,s^2)$\\
@@ -1300,12 +1493,12 @@ Contributions from Jessy Hwang
 
 The table above gives R commands for working with various named distributions. Commands analogous to \texttt{pbinom}, \texttt{qbinom}, and \texttt{rbinom} work for the other distributions in the table. For example, \texttt{pnorm}, \texttt{qnorm}, and \texttt{rnorm} can be used to get the CDF,  quantiles, and random generation for the Normal.  For the Multinomial, \texttt{dmultinom} can be used for calculating the joint PMF and \texttt{rmultinom} can be used for generating random vectors. For the Multivariate Normal, after installing and loading the \texttt{mvtnorm} package \texttt{dmvnorm} can be used for calculating the joint PDF and \texttt{rmvnorm} can be used for generating random vectors.
 
-\vspace{4in}
+% \vspace{4in}
 
 
 \section{Recommended Resources} \smallskip \hrule height 2pt \smallskip
 
-\bigskip
+% \bigskip
 
 \begin{itemize}
 \item Introduction to Probability Book (\url{http://bit.ly/introprobability})
@@ -1326,7 +1519,7 @@ The table above gives R commands for working with various named distributions. C
 \begin{center}
 \renewcommand{\arraystretch}{3.7}
 \begin{tabular}{cccccc}
-\textbf{Distribution} & \textbf{PMF/PDF and Support} & \textbf{Expected Value}  & \textbf{Variance} & \textbf{MGF}\\
+\textbf{Distribution} & \textbf{PMF/PDF and Support} & \textbf{E[X]}  & \textbf{Var[X]} & \textbf{MGF}\\
 \hline 
 \shortstack{Bernoulli \\ \Bern($p$)} & \shortstack{$P(X=1) = p$ \\$ P(X=0) = q=1-p$} & $p$ & $pq$ & $q + pe^t$ \\
 \hline
@@ -1334,11 +1527,11 @@ The table above gives R commands for working with various named distributions. C
 \hline
 \shortstack{Geometric \\ \Geom($p$)} & \shortstack{$P(X=k) = q^kp$  \\ $k \in \{$0, 1, 2, \dots $\}$}& $q/p$ & $q/p^2$ & $\frac{p}{1-qe^t}, \, qe^t < 1$\\
 \hline
-\shortstack{Negative Binomial \\ \NBin($r, p$)} & \shortstack{$P(X=n) = {r + n - 1 \choose r -1}p^rq^n$ \\ $n \in \{$0, 1, 2, \dots $\}$} & $rq/p$ & $rq/p^2$ &  $(\frac{p}{1-qe^t})^r, \, qe^t < 1$\\
+\shortstack{Negative Binomial \\ \NBin($r, p$)} & \shortstack{$P(X=k) = {r + k - 1 \choose n}p^rq^k$ \\ $k \in \{$0, 1, 2, \dots $\}$} & $rq/p$ & $rq/p^2$ &  $(\frac{p}{1-qe^t})^r, \, qe^t < 1$\\
 \hline
 \shortstack{Hypergeometric \\ \Hypergeometric($w, b, n$)} & \shortstack{$P(X=k) = \sfrac{{w \choose k}{b \choose n-k}}{{w + b \choose n}}$ \\ $k \in \{0, 1, 2, \dots,  n\}$} & $\mu = \frac{nw}{b+w}$ &$\left(\frac{w+b-n}{w+b-1} \right) n\frac{\mu}{n}(1 - \frac{\mu}{n})$& messy  \\
 \hline
-\shortstack{Poisson \\ \Pois($\lambda$)} & \shortstack{$P(X=k) = \frac{e^{-\lambda}\lambda^k}{k!}$ \\ $k \in \{$0, 1, 2, \dots $\}$} & $\lambda$ & $\lambda$ & $e^{\lambda(e^t-1)}$ \\
+\shortstack{Poisson \\ \Pois($\lambda$)} & \shortstack{$P(X=k) = \frac{\lambda^ke^{-\lambda}}{k!}$ \\ $k \in \{$0, 1, 2, \dots $\}$} & $\lambda$ & $\lambda$ & $e^{\lambda(e^t-1)}$ \\
 \hline
 \hline
 \shortstack{Uniform \\ \Unif($a, b$)} & \shortstack{$ f(x) = \frac{1}{b-a}$ \\$ x \in (a, b) $} & $\frac{a+b}{2}$ & $\frac{(b-a)^2}{12}$ &  $\frac{e^{tb}-e^{ta}}{t(b-a)}$\\
@@ -1353,9 +1546,9 @@ The table above gives R commands for working with various named distributions. C
 \hline
 \shortstack{Log-Normal \\ $\mathcal{LN}(\mu,\sigma^2)$} & \shortstack{$\frac{1}{x\sigma \sqrt{2\pi}}e^{-(\log x - \mu)^2/(2\sigma^2)}$\\$x \in (0, \infty)$} & $\theta = e^{ \mu + \sigma^2/2}$ & $\theta^2 (e^{\sigma^2} - 1)$ & doesn't exist\\
 \hline
-\shortstack{Chi-Square \\ $\chi_n^2$} & \shortstack{$\frac{1}{2^{n/2}\Gamma(n/2)}x^{n/2 - 1}e^{-x/2}$\\$x \in (0, \infty) $} & $n$  & $2n$ & $(1 - 2t)^{-n/2}, \, t < 1/2$\\
+\shortstack{Chi-Square \\ $\chi^2(n)$} & \shortstack{$\frac{1}{2^{n/2}\Gamma(n/2)}x^{n/2 - 1}e^{-x/2}$\\$x \in (0, \infty) $} & $n$  & $2n$ & $(1 - 2t)^{-n/2}, \, t < 1/2$\\
 \hline
-\shortstack{Student-$t$ \\ $t_n$} & \shortstack{$\frac{\Gamma((n+1)/2)}{\sqrt{n\pi} \Gamma(n/2)} (1+x^2/n)^{-(n+1)/2}$\\$x \in (-\infty, \infty)$} & $0$ if $n>1$ & $\frac{n}{n-2}$ if $n>2$ & doesn't exist\\
+\shortstack{Student-$t$ \\ $T(n)$} & \shortstack{$\frac{\Gamma((n+1)/2)}{\sqrt{n\pi} \Gamma(n/2)} (1+x^2/n)^{-(n+1)/2}$\\$x \in (-\infty, \infty)$} & $0$ if $n>1$ & $\frac{n}{n-2}$ if $n>2$ & doesn't exist\\
 \hline
 \end{tabular}
 \end{center}
