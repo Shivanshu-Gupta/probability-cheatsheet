@@ -80,13 +80,13 @@ openlevel=2
 
 \usepackage{titlesec}
 
+% Comment out the following 6 lines for B&W
 \titleformat{\section}
-% Comment out the following 5 lines for B&W
-% {\color{blue}\normalfont\large\bfseries}
-% {\color{blue}\thesection}{1em}{}
-% \titleformat{\subsection}
-% {\color{cyan}\normalfont\normalsize\bfseries}
-% {\color{cyan}\thesection}{1em}{}
+{\color{blue}\normalfont\large\bfseries}
+{\color{blue}\thesection}{1em}{}
+\titleformat{\subsection}
+{\color{cyan}\normalfont\normalsize\bfseries}
+{\color{cyan}\thesection}{1em}{}
 
 % Command pandoc tightlist: https://tex.stackexchange.com/a/258486 
 \providecommand{\tightlist}{%
@@ -112,8 +112,8 @@ openlevel=2
 
         \begin{center}
         % comment out line with \color{blue} and uncomment next line for B&W
-% 		{\color{blue} \Large{\textbf{Probability Cheatsheet v2.0}}} \\
-        {\Large{\textbf{Probability Cheatsheet}}} \\
+		{\color{blue} \Large{\textbf{Probability Cheatsheet v3.0}}} \\
+        % {\Large{\textbf{Probability Cheatsheet v3.0}}} \\
 
         \end{center}
 
@@ -123,7 +123,7 @@ openlevel=2
 
         \scriptsize
 
-        Compiled by William Chen (\url{http://wzchen.com}) and Joe Blitzstein, with contributions from Sebastian Chiu, Yuan Jiang, Yuqi Hou, and Jessy Hwang. Material based on Joe Blitzstein's (\texttt{\href{http://twitter.com/stat110}{@stat110}}) lectures (\url{http://stat110.net}) and Blitzstein/Hwang's Introduction to Probability textbook (\url{http://bit.ly/introprobability}). Licensed under \texttt{\href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{CC BY-NC-SA 4.0}}. Please share comments, suggestions, and errors at \url{http://github.com/wzchen/probability_cheatsheet}.
+        Compiled by \href{http://wzchen.com}{\textbf{William Chen}} and \textbf{Joe Blitzstein}, with contributions from \textbf{Sebastian Chiu}, \textbf{Yuan Jiang}, \textbf{Yuqi Hou}, \textbf{Jessy Hwang} and \textbf{Shivanshu Gupta}. Material based on Joe Blitzstein's (\texttt{\href{http://twitter.com/stat110}{@stat110}}) \href{http://stat110.net}{lectures}, Blitzstein/Hwang's \textbf{Introduction to Probability} \href{http://bit.ly/introprobability}{textbook} and \textbf{Hossein Pishro-Nik's Introduction to Probability, Statistics, and Random Processes} \href{https://www.probabilitycourse.com/}{textbook}. Licensed under \texttt{\href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{CC BY-NC-SA 4.0}}. Please share comments, suggestions, and errors at \url{http://github.com/wzchen/probability_cheatsheet}.
 
         \begin{center}
             Last Updated \today
@@ -159,7 +159,7 @@ openlevel=2
         \subsection{Multiplication Rule}\label{subsec:multiplication-rule}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=2in]{figures/icecream.pdf}
+            \includegraphics[width=2in]{../figures/icecream.pdf}
         \end{minipage}
         Let's say we have a compound experiment (an experiment with multiple components). If the 1st component has $n_1$ possible outcomes, the 2nd component has $n_2$ possible outcomes, \dots, and the $r$th component has $n_r$ possible outcomes, then overall there are $n_1n_2 \dots n_r$ possibilities for the whole experiment.
 
@@ -167,7 +167,7 @@ openlevel=2
         \vspace{-3ex}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=30ex]{figures/jar.png}
+            \includegraphics[width=30ex]{../figures/jar.png}
         \end{minipage}
         %  \begin{center}
         The sampling table gives the number of possible samples of size $k$ out of a population of size $n$, under various assumptions about how the sample is collected.
@@ -263,7 +263,7 @@ openlevel=2
         \subsection{Simpson's Paradox}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=2in]{figures/SimpsonsParadox.pdf}
+            \includegraphics[width=2in]{../figures/SimpsonsParadox.pdf}
         \end{minipage}
         It is possible to have
         \[P(A\mid B,C) < P(A\mid B^c, C) \textnormal{ and } P(A\mid B, C^c) < P(A \mid B^c, C^c)\]
@@ -307,7 +307,7 @@ openlevel=2
             \[ p_X(x) = P(X=x) \]
 % 		\begin{minipage}{\linewidth}
 % 			\centering
-% 			\includegraphics[width=2in]{figures/Binpmf.pdf}
+% 			\includegraphics[width=2in]{../figures/Binpmf.pdf}
 % 		\end{minipage}
             The PMF satisfies
             \[p_X(x) \geq 0 \textrm{ and } \sum_x p_X(x) = 1 \]
@@ -317,7 +317,7 @@ openlevel=2
             \[F_X(x) = P(X \leq x)\]
 % 		\begin{minipage}{\linewidth}
 % 			\centering
-% 			\includegraphics[width=2in]{figures/Bincdf.pdf}
+% 			\includegraphics[width=2in]{../figures/Bincdf.pdf}
 % 		\end{minipage}
             The CDF is an increasing, right-continuous function with
             \[F_X(x) \to 0 \textrm{ as $x \to -\infty$ and } F_X(x) \to 1 \textrm{ as $x \to \infty$} \]
@@ -339,7 +339,7 @@ openlevel=2
 
             \begin{minipage}{\linewidth}
                 \centering
-                \includegraphics[width=2in]{figures/linearity.pdf}
+                \includegraphics[width=2in]{../figures/linearity.pdf}
             \end{minipage}
 
             \item[Linearity] For any r.v.s $X$ and $Y$, and constants $a,b,c,$
@@ -393,7 +393,7 @@ openlevel=2
             \end{align*}
             \begin{minipage}{\linewidth}
                 \centering
-                \includegraphics[width=2in]{figures/Logisticpdfcdf.pdf}
+                \includegraphics[width=2in]{../figures/Logisticpdfcdf.pdf}
             \end{minipage}
             To find the probability that a CRV takes on a value in an interval, integrate the PDF over that interval.
             \begin{align*}
@@ -478,7 +478,7 @@ openlevel=2
         The joint PMF/PDF must be nonnegative and sum/integrate to 1.
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=1.0in]{figures/jointPDF.pdf}
+            \includegraphics[width=1.0in]{../figures/jointPDF.pdf}
         \end{minipage}
 
         \subsection{Conditional Distributions}
@@ -666,7 +666,7 @@ openlevel=2
             For example, the numbers of arrivals in the time intervals $[0,5]$, $(5,12),$ and $[13,23)$ are independent with $\Pois(5\lambda), \Pois(7\lambda), \Pois(10\lambda)$ distributions, respectively.
             \begin{minipage}{\linewidth}
                 \centering
-                \includegraphics[width=2in]{figures/pp.pdf}
+                \includegraphics[width=2in]{../figures/pp.pdf}
             \end{minipage}
 
             \item[Count-Time Duality]  Consider a Poisson process of emails arriving in an inbox at rate $\lambda$ emails per hour. Let $T_n$ be the time of arrival of the $n$th email (relative to some starting time $0$) and $N_t$ be the number of emails that arrive in $[0,t]$. Let's find the distribution of $T_1$. The event $T_1 > t$, the event that you have to wait more than $t$ hours to get the first email, is the same as the event $N_t = 0$, which is the event that there are no emails in the first $t$ hours. So
@@ -746,7 +746,7 @@ openlevel=2
 
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=1.8in]{figures/diff_types_of_convgnc_color.png}
+            \includegraphics[width=1.8in]{../figures/diff_types_of_convgnc_color.png}
         \end{minipage}
 
         Convergence of a sequence of random variables \(X1, X2, X3, \dots \) to
@@ -773,7 +773,6 @@ openlevel=2
         \end{description}
 
         \hypertarget{convergence-in-mean}{%
-
         \subsection{Convergence in mean:}\label{convergence-in-mean}}
 
         \begin{description}
@@ -783,7 +782,6 @@ openlevel=2
         \end{description}
 
         \hypertarget{almost-sure-convergence}{%
-
         \subsection{Almost sure convergence}\label{almost-sure-convergence}}
 
         \begin{description}
@@ -847,7 +845,7 @@ openlevel=2
         \subsection{Definition}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=2.3in]{figures/chainA.pdf}
+            \includegraphics[width=2.3in]{../figures/chainA.pdf}
         \end{minipage}
         A Markov chain is a random walk in a \textbf{state space}, which we will assume is finite, say $\{1, 2, \dots, M\}$. We let $X_t$ denote which element of the state space the walk is visiting at time $t$. The Markov chain is the sequence of random variables tracking where the walk is at all points in time, $X_0, X_1, X_2, \dots$. By definition, a Markov chain must satisfy the \textbf{Markov property}, which says that if you want to predict where the chain will be at a future time, if we know the present state then the entire past history is irrelevant.  \emph{Given the present, the past and future are conditionally independent}. In symbols,
         \[P(X_{n+1} = j | X_0 = i_0, X_1 = i_1, \dots, X_n = i) = P(X_{n+1} = j | X_n = i)\]
@@ -896,7 +894,7 @@ openlevel=2
         \subsection{Random Walk on an Undirected Network}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=1.6in]{figures/network1.pdf}
+            \includegraphics[width=1.6in]{../figures/network1.pdf}
         \end{minipage}
         \medskip
 
@@ -992,7 +990,7 @@ openlevel=2
         \subsection{Gamma Distribution}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=1.9in]{figures/gammapdfs.pdf}
+            \includegraphics[width=1.9in]{../figures/gammapdfs.pdf}
         \end{minipage}
         % Let us say that $X$ is distributed $\Gam(n,\lambda)$. We know the following:
         \begin{description}
@@ -1014,7 +1012,7 @@ openlevel=2
         \subsection{Beta Distribution}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=1.9in]{figures/Betapdfs.pdf}
+            \includegraphics[width=1.9in]{../figures/Betapdfs.pdf}
         \end{minipage}
         \medskip
 
@@ -1082,7 +1080,7 @@ openlevel=2
         \subsection{Binomial Distribution}
         \begin{minipage}{\linewidth}
             \centering
-            \includegraphics[width=1.3in]{figures/Bin10_05.pdf}
+            \includegraphics[width=1.3in]{../figures/Bin10_05.pdf}
         \end{minipage}
 
         Let us say that $X$ is distributed \Bin($n,p$). We know the following:
@@ -1481,6 +1479,7 @@ The table above gives R commands for working with various named distributions. C
 
 \section{Recommended Resources} \smallskip \hrule height 2pt \smallskip
 \begin{itemize}
+\item Introduction to Probability, Statistics, and Random Processes Book (\url{https://www.probabilitycourse.com/})
 \item Introduction to Probability Book (\url{http://bit.ly/introprobability})
 \item Stat 110 Online (\url{http://stat110.net})
 \item Stat 110 Quora Blog (\url{https://stat110.quora.com/})
